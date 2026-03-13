@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+
+  # ─── Service 1 : Application PHP/Apache ───────────────────
+  web:
+    build: ./web                  # Construit depuis web/Dockerfile
+    container_name: web
+    ports:
+      - "8080:80"                 # localhost:8080 → port 80 du conteneur
+    volumes:
+      - ./web/src:/var/www/html   # Code PHP monté en live
+    depends_on:
+      - mysql                     # Démarre après mysql
+    networks:
+      - app-network
+
+  # ─── Service 2 : Base de données MySQL ─────────────────────
+  mysql:
+    image: mysql:5.7              # Image officielle MySQL 5.7
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: testdb
+      MYSQL_USER: user
+      MYSQL_PASSWORD: userpassword
+    volumes:
+      - ./MySQL/data:/var/lib/mysql              # Persistance
+      - ./MySQL/init:/docker-entrypoint-initdb.d # Init SQL
+    ports:
+      - "3306:3306"
+    networks:
+      - app-network
+
+  # ─── Service 3 : phpMyAdmin ──────────────────────────────────
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    ports:
+      - "8081:80"                 # localhost:8081 → phpMyAdmin
+    environment:
+      PMA_HOST: mysql             # Nom du service MySQL
+      MYSQL_ROOT_PASSWORD: rootpassword
+    depends_on:
+      - mysql
+    networks:
+      - app-network
+
+# ─── Réseau partagé ──────────────────────────────────────────────
+networks:
+  app-network:
+    driver: bridge

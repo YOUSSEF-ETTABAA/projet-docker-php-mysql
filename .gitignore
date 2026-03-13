@@ -1,0 +1,19 @@
+# ──────────────────────────────────────────────────────────────
+# Données MySQL — OBLIGATOIRE : ne pas versionner !
+# ──────────────────────────────────────────────────────────────
+MySQL/data/
+
+# Variables d'environnement et secrets
+.env
+*.env
+
+# Fichiers système macOS et Windows
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Fichiers temporaires
+*.tmp
+*.bak
