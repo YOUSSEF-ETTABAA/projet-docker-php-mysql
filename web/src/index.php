@@ -10,7 +10,7 @@
   </style>
 </head>
 <body>
-  <h1>Formulaire d'enregistrement</h1>
+<h1>Formulaire d'enregistrement — v2.0</h1>
   <form action="save.php" method="post">
     <label>Nom :</label>
     <input type="text" name="nom" required><br><br>
